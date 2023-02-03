@@ -30,7 +30,12 @@ const signUp = async (data) => {
 const signIn = async (email, password) => {
     let user = await User.findOne({ email })
 
-    if(!user) throw new Error("User does not exists. Please try again")
+    // if(!user) throw new Error("User does not exists. Please try again")
+    if(!user){
+        const error = new Error("User does not exists. Please try again")
+        error.status = 404
+        throw error
+    }
 
     const isValid = await bcrypt.compare(password, user.password)
 
