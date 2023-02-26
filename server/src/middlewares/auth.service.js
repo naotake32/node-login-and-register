@@ -9,8 +9,13 @@ const Token = require("../models/Token")
 const {jwtSecret, salt, clientUrl} = require("../config")
 
 const signUp = async (data) => {
+    try {
     const { email } = data
+    console.log(data);
+    console.log({ email });
+    console.log("ok1");
     let user = await User.findOne({ email })
+    console.log("ok2");
 
     if(user) throw new Error("Email already exists")
 
@@ -26,6 +31,10 @@ const signUp = async (data) => {
         name: user.name,
         token
     })
+
+} catch (err) {
+    console.log(err);
+  }
 }
 const signIn = async (email, password) => {
     let user = await User.findOne({ email })
