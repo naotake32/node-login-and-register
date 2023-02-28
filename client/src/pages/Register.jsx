@@ -9,40 +9,50 @@ import {
 } from "@blueprintjs/core";
 import { Link, useNavigate } from "react-router-dom";
 
-const formSubmitHandler = async (e) => {
-  e.preventDefault();
-  setIsSubmitting(true);
-  setError("");
-
-  fetch("/api/auth/signin", {
-      method:"POST",
-      body: JSON.stringify({email, password}),
-      headers: { "Content-Type":"application/json"}
-  }).then(async response => {
-      // console.log(">>>>> ", response)
-      if(!response.ok){
-          if(response.status === 400) setError("Missing credentials")
-          else if(response.status === 404) setError("Invalid email and/or password")
-          else setError("Something went wrong! :<")
-      }else{
-          const data = await response.json()
-          console.log(data.token) //save this token in a global state
-          navigate("/")
-      }
-  }).catch(error => {
-      setError(error.message || "Something went wrong! :<")
-  }).finally(() => setIsSubmitting(false))
-};
-
 function Register() {
+  const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+
+  const formSubmitHandler = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError("");
+  
+    fetch("/api/auth/signup", {
+        method:"POST",
+        body: JSON.stringify({email, password}),
+        headers: { "Content-Type":"application/json"}
+    }).then(async response => {
+        // console.log(">>>>> ", response)
+        if(!response.ok){
+            if(response.status === 400) setError("Missing credentials")
+            else if(response.status === 404) setError("Invalid email and/or password")
+            else setError("Something went wrong! :<")
+        }else{
+            const data = await response.json()
+            console.log(data.token) //save this token in a global state
+            navigate("/")
+        }
+    }).catch(error => {
+        setError(error.message || "Something went wrong! :<")
+    }).finally(() => setIsSubmitting(false))
+  };
   return (
     <>
       {error && <Callout>{error}</Callout>}
       <form className="auth-form" onSubmit={formSubmitHandler}>
+        <FormGroup label="Username" labelFor="username">
+          <InputGroup
+            id="username"
+            placeholder="Enter your name"
+            type="username"
+            value={username}
+            onChange={(e) => setUserName(e.target.value)}
+          />
+        </FormGroup>
         <FormGroup label="Email" labelFor="email">
           <InputGroup
             id="email"
