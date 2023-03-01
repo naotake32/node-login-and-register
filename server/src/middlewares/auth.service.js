@@ -28,7 +28,7 @@ const signUp = async (data) => {
     return( data = {
         userId: user._id,
         email: user.email,
-        name: user.name,
+        username: user.username,
         token
     })
 
@@ -54,7 +54,7 @@ const signIn = async (email, password) => {
         return (data = {
             userId: user._id,
             email: user.email,
-            name: user.name,
+            username: user.username,
             token
         })
     }else{
@@ -84,7 +84,7 @@ const requestResetPassword = async (email) => {
     sendEmail(
         user.email,
         "Password Reset Request",
-        { name: user.name, link },
+        { username: user.username, link },
         "./template/requestResetPassword.handlebars"
     )
 
@@ -109,7 +109,7 @@ const resetPassword = async (userId, token, newPassword) => {
     sendEmail(
         user.email,
         "Password Reset Successfully",
-        { name: user.name },
+        { username: user.username },
         "./template/resetPassword.handlebars"
     )
 

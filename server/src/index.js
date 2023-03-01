@@ -24,6 +24,7 @@ app.use((req,res,next) => {
     const err = new Error("Route not found")
     err.status = 404
     next(err)
+    console.log(err);
 })
 
 //catch all middleware/route

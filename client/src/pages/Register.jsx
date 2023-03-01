@@ -23,10 +23,10 @@ function Register() {
   
     fetch("/api/auth/signup", {
         method:"POST",
-        body: JSON.stringify({email, password}),
+        body: JSON.stringify({username, email, password}),
         headers: { "Content-Type":"application/json"}
     }).then(async response => {
-        // console.log(">>>>> ", response)
+        console.log(">>>>> ", response)
         if(!response.ok){
             if(response.status === 400) setError("Missing credentials")
             else if(response.status === 404) setError("Invalid email and/or password")
@@ -73,7 +73,7 @@ function Register() {
         </FormGroup>
         <Button
           type="submit"
-          text="Sign In"
+          text="Sign Up"
           intent="primary"
           loading={isSubmitting}
         />
